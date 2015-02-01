@@ -7,7 +7,6 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 
 import android.app.Activity;
@@ -99,7 +98,9 @@ public class Register extends Activity {
 
 	public void newActivity() {
 		Intent intent = new Intent(this, MainActivity.class);
-		intent.putExtra("umd5", tool.md5(ustuidS+upwd) );
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		
+		
 		startActivity(intent);
 	}
 
