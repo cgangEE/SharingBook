@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">郑大书享</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_camera">Camera</string>
+    <string name="ustuid">学号</string>
+    <string name="upwd">密码</string>
+    <string name="upwdR">查成绩的密码</string>
+    <string name="ugrade">年级</string>
+	<string name="login">登录</string>
+	<string name="register">注册</string>
+	<string name="uphone">手机号</string>
+	<string name="ustuidRemind">请输入学号</string>
+	<string name="upwdRemind">请输入密码</string>
+	<string name="uphoneRemind">请输入手机号</string>
+	<string name="ugradeRemind">请选择年级</string>
+	<string name="confirm">确定</string>
+	<string name="networkRemind">请检查您的网络</string>
+	<string name="networkFailed">网络出现错误，请您稍后重试</string>
+	<string name="upic">User head picture</string>
+	<string name="lorem_ipsum"> To set up the animation:
+
+    Create member variables for the views that you want to crossfade. You need these references later when modifying the views during the animation.
+    For the view that is being faded in, set its visibility to GONE. This prevents the view from taking up layout space and omits it from layout calculations, speeding up processing.
+    Cache the config_shortAnimTime system property in a member variable. This property defines a standard "short" duration for the animation. This duration is ideal for subtle animations or animations that occur very frequently. config_longAnimTime and config_mediumAnimTime are also available if you wish to use them.
+</string>
+</resources>
