@@ -2,6 +2,9 @@ package com.example.sharingbook;
 
 import java.security.MessageDigest;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 public class tool {
 	public static String md5(String inStr) {
 		MessageDigest md5 = null;
@@ -24,6 +27,19 @@ public class tool {
 			hexValue.append(Integer.toHexString(val));
 		}
 		return hexValue.toString();
+	}
 
+	public static void putString(Context context, String key, String value) {
+		SharedPreferences sharePref = context.getSharedPreferences(context
+				.getResources().getString(R.string.preference_key), 0);
+		SharedPreferences.Editor editor = sharePref.edit();
+		editor.putString(key, value);
+		editor.commit();
+	}
+	
+	public static String  getString(Context context, String key) {
+		SharedPreferences sharePref = context.getSharedPreferences(context
+				.getResources().getString(R.string.preference_key), 0);
+		return sharePref.getString(key, null);
 	}
 }

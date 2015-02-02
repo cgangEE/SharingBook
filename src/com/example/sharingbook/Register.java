@@ -96,11 +96,11 @@ public class Register extends Activity {
 				.setPositiveButton(R.string.confirm, null).show();
 	}
 
-	public void newActivity() {
+	public void registerSuccess() {
+		tool.putString(this, "ustuid", ustuidS);
+		tool.putString(this, "upwd", upwdS);
+		tool.putString(this, "umd5", tool.md5(ustuidS+upwd));
 		Intent intent = new Intent(this, MainActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		
-		
 		startActivity(intent);
 	}
 
@@ -112,7 +112,7 @@ public class Register extends Activity {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								newActivity();
+								registerSuccess();
 							}
 						}).show();
 	}
@@ -130,14 +130,15 @@ public class Register extends Activity {
 			char c = result.charAt(0);
 			if (c == '0' || c == '1') {
 				if (c == '0')
-					result = "您的学号曾经注册过，\n点确认直接登录";
+					result = getResources().getString(R.string.registerHad);
 				else
-					result = "恭喜您，注册成功！";
+					result = getResources().getString(R.string.registerSuccess);
 				login(result);
 			} else if (c == '2') {
-				result = "年级、学号或密码错误，\n请你重新输入";
+				result = getResources().getString(R.string.registerError);
 				show(result);
 			}
+			else show(result);
 		}
 
 		private String downloadUrl(String xurl) {
@@ -155,7 +156,7 @@ public class Register extends Activity {
 				int response = conn.getResponseCode();
 				if (response == 200) {
 					is = conn.getInputStream();
-					return readIt(is, 30);
+					return readIt(is, 10);
 				} else
 					return getResources().getString(R.string.networkFailed);
 			} catch (IOException e) {
