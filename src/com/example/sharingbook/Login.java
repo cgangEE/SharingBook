@@ -8,10 +8,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.example.sharingbook.Register.HttpTask;
-
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,16 +18,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.example.sharingbook.Register.HttpTask;
 
 public class Login extends Activity {
 	EditText ustuid, upwd;
+	String ustuidS, upwdS, umd5;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-		if (tool.getString(this, "umd5")!=null){
+		if (tool.getString(this, "umd5") != null) {
 			Intent intent = new Intent(this, MainActivity.class);
 			startActivity(intent);
 			finish();
@@ -58,28 +59,44 @@ public class Login extends Activity {
 	}
 
 	public void login(View view) {
-		
-		String ustuidS = ustuid.getText().toString();
+
+		ustuidS = ustuid.getText().toString();
 		if (ustuidS.length() == 0) {
-			new AlertDialog.Builder(this).setMessage(R.string.ustuidRemind).setPositiveButton(R.string.confirm, null).show();
+			new AlertDialog.Builder(this).setMessage(R.string.ustuidRemind)
+					.setPositiveButton(R.string.confirm, null).show();
 			return;
 		}
-		String upwdS = upwd.getText().toString();
+		upwdS = upwd.getText().toString();
 		if (upwdS.length() == 0) {
-			new AlertDialog.Builder(this).setMessage(R.string.upwdRemind).setPositiveButton(R.string.confirm, null).show();
+			new AlertDialog.Builder(this).setMessage(R.string.upwdRemind)
+					.setPositiveButton(R.string.confirm, null).show();
 			return;
 		}
-		
-		String umd5 = tool.md5(ustuidS+upwdS);
+
+		umd5 = tool.md5(ustuidS + upwdS);
 		if (Network.ok(this)) {
-			new HttpTask()
-			.execute("http://www.sharingbook.cn/login.php?umd5="+umd5);
+			new HttpTask().execute("http://www.sharingbook.cn/login.php?umd5="
+					+ umd5);
 		} else
 			new AlertDialog.Builder(this).setMessage(R.string.networkRemind)
 					.setPositiveButton(R.string.confirm, null).show();
 
 	}
-	
+
+	public void show(String s) {
+		new AlertDialog.Builder(this).setMessage(s)
+				.setPositiveButton(R.string.confirm, null).show();
+	}
+
+	public void loginSuccess() {
+		tool.putString(this, "ustuid", ustuidS);
+		tool.putString(this, "upwd", upwdS);
+		tool.putString(this, "umd5", umd5);
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
+		finish();
+	}
+
 	public class HttpTask extends AsyncTask<String, Void, String> {
 
 		@Override
@@ -91,11 +108,12 @@ public class Login extends Activity {
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			char c = result.charAt(0);
-			if (c=='1'){
-				
-			}
-			else{
-				if (c=='0') result = 
+			if (c == '1') {
+				loginSuccess();
+			} else {
+				if (c == '0')
+					result = getResources().getString(R.string.loginError);
+				show(result);
 			}
 		}
 

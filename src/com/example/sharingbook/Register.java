@@ -25,7 +25,6 @@ public class Register extends Activity {
 	Spinner ugrade;
 	EditText ustuid, upwd;
 	String ustuidS, upwdS, ugradeS;
-	ArrayAdapter mAdapter;
 	int begin;
 
 	@Override
@@ -48,7 +47,7 @@ public class Register extends Activity {
 		for (int i = begin; i >= 1997; --i)
 			m[begin - i + 1] = Integer.toString(i);
 
-		mAdapter = new ArrayAdapter<String>(this,
+		ArrayAdapter mAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, m);
 		mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		ugrade.setAdapter(mAdapter);
@@ -102,6 +101,7 @@ public class Register extends Activity {
 		tool.putString(this, "umd5", tool.md5(ustuidS+upwd));
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
+		finish();
 	}
 
 	public void login(String s) {
