@@ -12,9 +12,14 @@
         -->
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
+
+    <style name="AppTheme" parent="AppBaseTheme" type="text/css">
+        <item name="android:actionBarTabTextStyle">@style/MyActionBarTabText</item>
+    </style>
+
+    <style name="MyActionBarTabText" parent="@android:style/Widget.Holo.ActionBar.TabText" type="text/css">
+        <item name="android:textColor">#555</item>
     </style>
 
 </resources>

@@ -1,8 +1,11 @@
 package com.example.sharingbook;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
+import android.app.FragmentTransaction;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -32,68 +35,67 @@ public class MainActivity extends FragmentActivity {
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new SlideAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
-		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
 				getActionBar().setSelectedNavigationItem(position);
 				super.onPageSelected(position);
 			}
-			
+
 		});
-		
+
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
-		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-			
-			@Override
-			public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onTabSelected(Tab tab, FragmentTransaction ft) {
-				mPager.setCurrentItem(tab.getPosition());
-				
-			}
-			
-			@Override
-			public void onTabReselected(Tab tab, FragmentTransaction ft) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-		
-		for (int i=0; i<NUM_PAGES; ++i)
-			actionBar.addTab(
-			actionBar.newTab().setText("Tab"+(i+1)).setTabListener(tabListener)
-		);
+
+		actionBar.setStackedBackgroundDrawable(new ColorDrawable(Color
+				.parseColor("#dddddd")));
+
+		ActionBar.TabListener tabListener = new MTabListener();
+
+		for (int i = 0; i < NUM_PAGES; ++i)
+			actionBar.addTab(actionBar.newTab().setText(getTabText(i))
+					.setTabListener(tabListener));
 	}
 
-	
-	public class MyClicklistener implements View.OnClickListener {
-
-		public MyClicklistener (int i){
-			
+	public String getTabText(int i) {
+		switch (i) {
+		case 0:
+			return getResources().getString(R.string.home);
+		case 1:
+			return getResources().getString(R.string.message);
+		case 2:
+			return getResources().getString(R.string.contact);
+		default:
+			return getResources().getString(R.string.me);
 		}
-		
+	}
+
+	public class MTabListener implements TabListener {
+
 		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			
+		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 		}
-		
+
+		@Override
+		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+			mPager.setCurrentItem(tab.getPosition());
+		}
+
+		@Override
+		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		}
+
 	}
+
 	private class SlideAdapter extends FragmentPagerAdapter {
 		public SlideAdapter(FragmentManager fm) {
 			super(fm);
 		}
 
 		@Override
-		public Fragment getItem(int arg0) {
-			return new SlideFragment();
+		public Fragment getItem(int position) {
+			return new SlideFragment(position);
 		}
 
 		@Override
@@ -104,7 +106,11 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public class SlideFragment extends Fragment {
-
+		private int position;
+		public SlideFragment(int pos){
+			position = pos;
+		}
+		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
@@ -120,7 +126,7 @@ public class MainActivity extends FragmentActivity {
 		if (mPager.getCurrentItem() == 0)
 			super.onBackPressed();
 		else
-			mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+			mPager.setCurrentItem(0);
 	}
 
 	@Override
@@ -138,7 +144,5 @@ public class MainActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-
 
 }
