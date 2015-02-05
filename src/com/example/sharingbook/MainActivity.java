@@ -1,6 +1,10 @@
 package com.example.sharingbook;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
@@ -18,6 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
@@ -95,7 +101,7 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			return new SlideFragment(position);
+			return new MainFragment(position, MainActivity.this);
 		}
 
 		@Override
@@ -105,21 +111,7 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
-	public class SlideFragment extends Fragment {
-		private int position;
-		public SlideFragment(int pos){
-			position = pos;
-		}
-		
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.frag,
-					container, false);
-			return rootView;
-		}
 
-	}
 
 	@Override
 	public void onBackPressed() {
