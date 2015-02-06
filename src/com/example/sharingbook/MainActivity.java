@@ -1,10 +1,6 @@
 package com.example.sharingbook;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
@@ -17,13 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
@@ -31,13 +22,11 @@ public class MainActivity extends FragmentActivity {
 	private static final int NUM_PAGES = 4;
 	private ViewPager mPager;
 	private PagerAdapter mPagerAdapter;
-	private TextView t0, t1, t2, t3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new SlideAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
@@ -62,6 +51,8 @@ public class MainActivity extends FragmentActivity {
 		for (int i = 0; i < NUM_PAGES; ++i)
 			actionBar.addTab(actionBar.newTab().setText(getTabText(i))
 					.setTabListener(tabListener));
+		
+		
 	}
 
 	public String getTabText(int i) {
@@ -110,8 +101,6 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	}
-
-
 
 	@Override
 	public void onBackPressed() {

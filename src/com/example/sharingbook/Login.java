@@ -76,7 +76,7 @@ public class Login extends Activity {
 		umd5 = tool.md5(ustuidS + upwdS);
 		if (Network.ok(this)) {
 			new HttpTask().execute("http://www.sharingbook.cn/login.php?umd5="
-					+ umd5);
+					+ umd5+"&ustuid="+ustuidS);
 		} else
 			new AlertDialog.Builder(this).setMessage(R.string.networkRemind)
 					.setPositiveButton(R.string.confirm, null).show();
