@@ -43,7 +43,7 @@ public class Register extends Activity {
 			begin--;
 
 		String m[] = new String[begin - 1996 + 1];
-		m[0] = "年级";
+		m[0] = "�꼶";
 		for (int i = begin; i >= 1997; --i)
 			m[begin - i + 1] = Integer.toString(i);
 

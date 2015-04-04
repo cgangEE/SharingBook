@@ -2,11 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.sharingbook.MainActivity" >
 
-
     <item
-        android:id="@+id/action_camera"
-        android:icon="@drawable/ic_action_camera"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_camera"/>
+        android:id="@+id/sharing"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="always"
+        android:title="@string/sharing"/>
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="always"
+        android:title="@string/search"/>
 
 </menu>

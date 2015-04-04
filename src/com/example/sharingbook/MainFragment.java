@@ -1,5 +1,10 @@
 package com.example.sharingbook;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +21,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -74,13 +80,13 @@ public class MainFragment extends Fragment {
 	}
 
 	public void upateUserInfo(final Activity act) {
-		if (tool.getString(act, "uname")!=null  &&  upicBP!=null){
+		if (tool.getString(act, "uname") != null && upicBP != null) {
 			setListView();
 			listview.setVisibility(View.VISIBLE);
-			progressbar.setVisibility(View.GONE);			
+			progressbar.setVisibility(View.GONE);
 			return;
 		}
-		
+
 		String umd5 = tool.getString(act, "umd5");
 		String ustuid = tool.getString(act, "ustuid");
 		final RequestQueue mQueue = Volley.newRequestQueue(act);
@@ -105,23 +111,53 @@ public class MainFragment extends Fragment {
 
 							String upic = tool.getString(act, "upic");
 
-							ImageRequest imgReq = new ImageRequest(
-									upic,
-									new Response.Listener<Bitmap>() {
-										@Override
-										public void onResponse(Bitmap response) {
-											upicBP = response;
-											setListView();
-											crossfade();
-										}
-									}, 0, 0, Config.RGB_565,
-									new Response.ErrorListener() {
-										@Override
-										public void onErrorResponse(
-												VolleyError error) {
-										}
-									});
-							mQueue.add(imgReq);
+							final File file = new File(act.getFilesDir(),
+									response.getString("uname")+"upic");
+
+							if (!file.exists()) {
+								ImageRequest imgReq = new ImageRequest(
+										upic,
+										new Response.Listener<Bitmap>() {
+											@Override
+											public void onResponse(
+													Bitmap response) {
+												upicBP = response;
+
+												try {
+													file.createNewFile();
+													FileOutputStream out = new FileOutputStream(
+															file);
+													out.write(bitmap2Bytes(upicBP));
+													out.flush();
+													out.close();
+												} catch (IOException e) {
+													new AlertDialog.Builder(act)
+															.setMessage(
+																	e.toString())
+															.setPositiveButton(
+																	R.string.confirm,
+																	null)
+															.show();
+												}
+
+												setListView();
+												crossfade();
+											}
+										}, 0, 0, Config.RGB_565,
+										new Response.ErrorListener() {
+											@Override
+											public void onErrorResponse(
+													VolleyError error) {
+											}
+										});
+								mQueue.add(imgReq);
+							} else {
+								FileInputStream in = new FileInputStream(file);
+								upicBP = BitmapFactory.decodeStream(in);
+								setListView();
+								crossfade();
+							}
+
 						} catch (Exception e) {
 
 						}
@@ -136,6 +172,12 @@ public class MainFragment extends Fragment {
 				});
 
 		mQueue.add(jsonReq);
+	}
+
+	public byte[] bitmap2Bytes(Bitmap bm) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+		return baos.toByteArray();
 	}
 
 	private void crossfade() {
@@ -243,7 +285,7 @@ public class MainFragment extends Fragment {
 					holder = (FirstItemViewHolder) view.getTag();
 				}
 				if (holder.imageView != null) {
-						holder.imageView.setImageBitmap(upicBP);
+					holder.imageView.setImageBitmap(upicBP);
 				}
 				if (holder.textView != null) {
 					holder.textView.setText(tool.getString(act, "uname"));
@@ -271,7 +313,6 @@ public class MainFragment extends Fragment {
 			TextView textView;
 		}
 
-		// 除第一个Item以外其余Item的ViewHolder
 		private class OthersViewHolder {
 			TextView textView;
 		}
@@ -289,15 +330,15 @@ public class MainFragment extends Fragment {
 			case R.string.logout:
 				new AlertDialog.Builder(act)
 						.setMessage(R.string.logoutRemind)
-						.setPositiveButton(		R.string.logout,
+						.setPositiveButton(R.string.logout,
 								new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								logout();
-							}
-						})
-						.setNegativeButton(R.string.cancel, null).show();
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										logout();
+									}
+								}).setNegativeButton(R.string.cancel, null)
+						.show();
 				break;
 			default:
 			}

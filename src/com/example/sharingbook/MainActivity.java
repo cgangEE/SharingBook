@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
 
@@ -27,6 +27,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new SlideAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
@@ -51,9 +52,26 @@ public class MainActivity extends FragmentActivity {
 		for (int i = 0; i < NUM_PAGES; ++i)
 			actionBar.addTab(actionBar.newTab().setText(getTabText(i))
 					.setTabListener(tabListener));
-		
-		
+
+		// setupActionBar();
+
 	}
+
+	/*
+	 * private void setupActionBar() { ActionBar actionBar = getActionBar();
+	 * actionBar.setDisplayShowTitleEnabled(false);
+	 * actionBar.setDisplayUseLogoEnabled(false);
+	 * actionBar.setDisplayHomeAsUpEnabled(false);
+	 * actionBar.setDisplayShowCustomEnabled(true);
+	 * actionBar.setDisplayShowHomeEnabled(false);
+	 * 
+	 * LayoutParams lp1 = new LayoutParams(LayoutParams.MATCH_PARENT,
+	 * LayoutParams.MATCH_PARENT); View customNav =
+	 * LayoutInflater.from(this).inflate(R.layout.actionbar, null); // layout
+	 * which contains your button.
+	 * 
+	 * actionBar.setCustomView(customNav, lp1); }
+	 */
 
 	public String getTabText(int i) {
 		switch (i) {
@@ -62,7 +80,7 @@ public class MainActivity extends FragmentActivity {
 		case 1:
 			return getResources().getString(R.string.message);
 		case 2:
-			return getResources().getString(R.string.contact);
+			return getResources().getString(R.string.find);
 		default:
 			return getResources().getString(R.string.me);
 		}
@@ -119,9 +137,25 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = null;
 		int id = item.getItemId();
-		if (id == R.id.action_camera) {
+		switch (id) {
+		case R.id.sharing:
+			intent = new Intent(this, Sharing.class);
+			startActivity(intent);
 			return true;
+			/*
+			String IMAGE_TYPE="image/*";
+			int IMAGE_CODE=0;
+			Intent getAlbum = new Intent(Intent.ACTION_GET_CONTENT);
+			getAlbum.setType(IMAGE_TYPE);
+			startActivityForResult(getAlbum, IMAGE_CODE);
+			*/
+		case R.id.search:
+			intent = new Intent(this, Search.class);
+			startActivity(intent);
+			break;
+		default:
 		}
 		return super.onOptionsItemSelected(item);
 	}
