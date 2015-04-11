@@ -9,6 +9,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <ImageButton
+            android:id="@+id/spic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:onClick="getPhoto"
+            android:src="@drawable/ic_action_photo" />
+
         <EditText
             android:id="@+id/sname"
             android:layout_width="fill_parent"
@@ -16,7 +28,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:hint="@string/sname"
             android:maxLength="20"
             android:maxLines="1" />
@@ -32,18 +44,14 @@
             android:hint="@string/sauthor"
             android:maxLines="1" />
 
-        <EditText
+        <Spinner
             android:id="@+id/sprice"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp"
-            android:hint="@string/sprice"
-            android:maxLength="10"
-            android:maxLines="1"
-            android:numeric="integer" />
+            android:layout_marginTop="10dp" />
 
         <Spinner
             android:id="@+id/slocation"

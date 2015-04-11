@@ -4,6 +4,8 @@ import java.security.MessageDigest;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 
 public class tool {
 	public static String md5(String inStr) {
@@ -36,10 +38,18 @@ public class tool {
 		editor.putString(key, value);
 		editor.commit();
 	}
-	
-	public static String  getString(Context context, String key) {
+
+	public static String getString(Context context, String key) {
 		SharedPreferences sharePref = context.getSharedPreferences(context
 				.getResources().getString(R.string.preference_key), 0);
 		return sharePref.getString(key, null);
+	}
+
+	public static Bitmap bitmapChange(Bitmap bitmap, float x) {
+		Matrix matrix = new Matrix();
+		matrix.postScale(x, x); // 长和宽放大缩小的比例
+		Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+				bitmap.getHeight(), matrix, true);
+		return resizeBmp;
 	}
 }

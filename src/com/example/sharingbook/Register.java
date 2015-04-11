@@ -59,7 +59,7 @@ public class Register extends Activity {
 
 		/* verify user's input */
 		ugradeS = ugrade.getSelectedItem().toString();
-		if (ugradeS.compareTo("年级") == 0) {
+		if (ugradeS.compareTo("�꼶") == 0) {
 			new AlertDialog.Builder(this).setMessage(R.string.ugradeRemind)
 					.setPositiveButton(R.string.confirm, null).show();
 			return;
