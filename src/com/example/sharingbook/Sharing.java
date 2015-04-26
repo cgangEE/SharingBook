@@ -2,7 +2,9 @@ package com.example.sharingbook;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Random;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -10,6 +12,7 @@ import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
@@ -35,7 +38,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class Sharing extends Activity {
 	Spinner slocation, sprice;
@@ -44,7 +46,7 @@ public class Sharing extends Activity {
 	Bitmap bp = null;
 	String location[] = { "∑÷œÌµÿµ„", "¡¯‘∞", "∫…‘∞", "æ’‘∞", "À…‘∞" };
 	String priceStr[] = new String[102];
-	String sauthorS, snameS, spriceS, slocationS;
+	String sauthorS, snameS, spriceS, slocationS, spicS;
 	int spriceId, slocationId;
 
 	@Override
@@ -77,15 +79,36 @@ public class Sharing extends Activity {
 		sprice.setVisibility(View.VISIBLE);
 	}
 
+	public void show(String s) {
+		new AlertDialog.Builder(this).setMessage(s)
+				.setPositiveButton(R.string.confirm, null).show();
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.posting) {
+			String ustuidS = tool.getString(Sharing.this, "ustuid");
+
 			if (bp == null) {
 				new AlertDialog.Builder(this).setMessage(R.string.spicRemind)
 						.setPositiveButton(R.string.confirm, null).show();
 				return true;
 			}
+			Random r = new Random();
+
+			spicS = ustuidS + (new Integer(r.nextInt(100000000))).toString();
+			File file = new File(Sharing.this.getFilesDir(), spicS);
+			try {
+				file.createNewFile();
+				FileOutputStream out = new FileOutputStream(file);
+				out.write(tool.bitmap2Bytes(bp));
+				out.flush();
+				out.close();
+			} catch (Exception e) {
+				show("fuck me "+e.toString());
+			}
+
 			snameS = sname.getText().toString();
 			if (snameS.length() == 0) {
 				new AlertDialog.Builder(this).setMessage(R.string.snameRemind)
@@ -119,7 +142,11 @@ public class Sharing extends Activity {
 			}
 
 			if (Network.ok(this)) {
-				
+				String webServer = getResources().getString(R.string.webServer);
+				new HttpTask().execute(webServer + "/sharing.php?spic=" + spicS
+						+ "&sname=" + snameS + "&sauthor=" + sauthorS
+						+ "&sprice=" + spriceS + "&slocation=" + slocationS
+						+ "&ustuid=" + ustuidS);
 			} else
 				new AlertDialog.Builder(this)
 						.setMessage(R.string.networkRemind)
@@ -133,49 +160,73 @@ public class Sharing extends Activity {
 	final int IMAGE_SELECT = 0;
 	final int IMAGE_CAMERA = 1;
 
+	void sharingSuccess(){
+		new AlertDialog.Builder(this)
+		.setMessage(R.string.sharingSuccess)
+		.setPositiveButton(R.string.confirm,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog,
+							int which) {
+						finish();
+					}
+				}).show();
+	}
+	
 	public class HttpTask extends AsyncTask<String, Void, String> {
 
 		@Override
 		protected String doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			return null;
+			return uploadFile(params[0]);
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			char c = result.charAt(0);
+			if (c=='1'){
+				sharingSuccess();
+			}
+			else{
+				if (c=='0')
+					result = getResources().getString(R.string.sharingFailed);
+				show(result);
+			}
+			
 		}
-		
-		private String uploadFile(String uploadUrl)  
-		{  
-			try{
-		        HttpClient httpclient = new DefaultHttpClient();  
-		        httpclient.getParams().setParameter(  
-		                CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);  
-		        HttpPost httppost = new HttpPost(uploadUrl);  
-		          
-		        MultipartEntity entity = new MultipartEntity();  
-		          
-		        File file = new File("");  
-		        FileBody fileBody = new FileBody(file);  
-		        entity.addPart("uploadedfile", fileBody);  
-		              
-		        httppost.setEntity(entity);  
-		        HttpResponse response = httpclient.execute(httppost);  
-		          
-		        HttpEntity resEntity = response.getEntity();  
-		        if (resEntity != null) {              
-		            Toast.makeText(this, EntityUtils.toString(resEntity), Toast.LENGTH_LONG).show();  
-		        }  
-		  
-		        httpclient.getConnectionManager().shutdown();  
-			} catch (Exception e){
+
+		private String uploadFile(String uploadUrl) {
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				httpclient.getParams().setParameter(
+						CoreProtocolPNames.PROTOCOL_VERSION,
+						HttpVersion.HTTP_1_1);
+
+				HttpPost httppost = new HttpPost(uploadUrl);
+				MultipartEntity entity = new MultipartEntity();
+				File file = new File(Sharing.this.getFilesDir(), spicS);
+				ContentBody fileBody = new FileBody(file);
+
+				entity.addPart("uploadedfile", fileBody);
+				httppost.setEntity(entity);
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity resEntity = response.getEntity();
+
+				String ret = null;
+				if (resEntity != null)
+					ret = EntityUtils.toString(resEntity);
+				else
+					ret = getResources().getString(R.string.networkFailed);
+				httpclient.getConnectionManager().shutdown();
+
+				return ret;
+			} catch (Exception e) {
 				return getResources().getString(R.string.networkFailed);
 			}
-		}  
-		
+		}
+
 	}
+
 	public void getPhoto(View view) {
 		final String[] items = { "¥” ÷ª˙œ‡≤·—°‘Ò", "≈ƒ’’" };
 		new AlertDialog.Builder(this).setTitle("Õº È∑‚√Ê’’∆¨")

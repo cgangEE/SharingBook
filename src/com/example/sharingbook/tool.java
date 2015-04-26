@@ -1,5 +1,6 @@
 package com.example.sharingbook;
 
+import java.io.ByteArrayOutputStream;
 import java.security.MessageDigest;
 
 import android.content.Context;
@@ -51,5 +52,11 @@ public class tool {
 		Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
 				bitmap.getHeight(), matrix, true);
 		return resizeBmp;
+	}
+	
+	public static byte[] bitmap2Bytes(Bitmap bm) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+		return baos.toByteArray();
 	}
 }

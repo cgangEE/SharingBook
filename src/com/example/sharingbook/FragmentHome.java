@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-public class MainFragment extends Fragment {
-	private int pos;
+public class FragmentHome extends Fragment {
 	private Activity act;
 	final static int a[] = new int[] { 0, R.string.setting, R.string.logout };
 
@@ -19,18 +18,14 @@ public class MainFragment extends Fragment {
 	ListView listview = null;
 	ProgressBar progressbar = null;
 
-	public MainFragment(int position, Activity activity) {
-		pos = position;
+	public FragmentHome(Activity activity) {
 		act = activity;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		ViewGroup rootView;
-
-		rootView = (ViewGroup) inflater
-				.inflate(R.layout.frag, container, false);
+		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.home, container, false);
 
 		return rootView;
 	}

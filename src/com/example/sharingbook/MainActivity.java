@@ -32,13 +32,11 @@ public class MainActivity extends FragmentActivity {
 		mPagerAdapter = new SlideAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-
 			@Override
 			public void onPageSelected(int position) {
 				getActionBar().setSelectedNavigationItem(position);
 				super.onPageSelected(position);
 			}
-
 		});
 
 		final ActionBar actionBar = getActionBar();
@@ -52,26 +50,7 @@ public class MainActivity extends FragmentActivity {
 		for (int i = 0; i < NUM_PAGES; ++i)
 			actionBar.addTab(actionBar.newTab().setText(getTabText(i))
 					.setTabListener(tabListener));
-
-		// setupActionBar();
-
 	}
-
-	/*
-	 * private void setupActionBar() { ActionBar actionBar = getActionBar();
-	 * actionBar.setDisplayShowTitleEnabled(false);
-	 * actionBar.setDisplayUseLogoEnabled(false);
-	 * actionBar.setDisplayHomeAsUpEnabled(false);
-	 * actionBar.setDisplayShowCustomEnabled(true);
-	 * actionBar.setDisplayShowHomeEnabled(false);
-	 * 
-	 * LayoutParams lp1 = new LayoutParams(LayoutParams.MATCH_PARENT,
-	 * LayoutParams.MATCH_PARENT); View customNav =
-	 * LayoutInflater.from(this).inflate(R.layout.actionbar, null); // layout
-	 * which contains your button.
-	 * 
-	 * actionBar.setCustomView(customNav, lp1); }
-	 */
 
 	public String getTabText(int i) {
 		switch (i) {
@@ -110,7 +89,20 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			return new MainFragment(position, MainActivity.this);
+			//Important, need to modify....
+			Fragment ret = null;
+			switch (position){
+			case 0:
+				ret = new FragmentHome(MainActivity.this);
+				break;
+			case 1:
+			case 2:
+				ret = new MainFragment(position, MainActivity.this);
+				break;
+			case 3:
+				ret = new FragmentMe(MainActivity.this);
+			}
+			return ret;
 		}
 
 		@Override
@@ -144,13 +136,7 @@ public class MainActivity extends FragmentActivity {
 			intent = new Intent(this, Sharing.class);
 			startActivity(intent);
 			return true;
-			/*
-			String IMAGE_TYPE="image/*";
-			int IMAGE_CODE=0;
-			Intent getAlbum = new Intent(Intent.ACTION_GET_CONTENT);
-			getAlbum.setType(IMAGE_TYPE);
-			startActivityForResult(getAlbum, IMAGE_CODE);
-			*/
+
 		case R.id.search:
 			intent = new Intent(this, Search.class);
 			startActivity(intent);

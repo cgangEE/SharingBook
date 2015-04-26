@@ -81,8 +81,9 @@ public class Register extends Activity {
 		/* get response from server according user's input */
 
 		if (Network.ok(this)) {
+			String webServer = getResources().getString(R.string.webServer);
 			new HttpTask()
-					.execute("http://www.sharingbook.cn/register.php?ustuid="
+					.execute(webServer + "/register.php?ustuid="
 							+ ustuidS + "&upwd=" + upwdS + "&ugrade=" + ugradeS);
 		} else
 			new AlertDialog.Builder(this).setMessage(R.string.networkRemind)
