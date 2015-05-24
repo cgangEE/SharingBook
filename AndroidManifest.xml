@@ -43,6 +43,46 @@
             android:label="@string/sharing"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".User"
+            android:label="@string/editBook"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".OtherUser"
+            android:label="@string/user"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Search"
+            android:label="@string/search"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".BookInfo"
+            android:label="@string/user"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".EditBookInfo"
+            android:label="@string/editBook"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".ObservingList"
+            android:label="@string/observing"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".FanList"
+            android:label="@string/fan"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".FragmentChat"
+            android:label="@string/message"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

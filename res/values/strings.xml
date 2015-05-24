@@ -45,10 +45,22 @@
     <string name="sauthor">作者</string>
     <string name="sprice">价格</string>
     <string name="slocation">交易地点</string>
+    <string name="sendMessage">发消息</string>
+    <string name="send">发送</string>
+    <string name="observing">关注</string>
+    <string name="fan">粉丝</string>
+    <string name="observed">已关注</string>
+    <string name="user">详细信息</string>
+    <string name="buy">申请购买</string>
+    <string name="delete">删除</string>
+    <string name="deleteRemind">您确定要删除此条分享吗?</string>
+    <string name="messageEmpty">发送的消息不能为空</string>
+    <string name="editBook">分享管理</string>
+    <string name="sold">已出售</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_camera">Camera</string>
     <string name="upic">User head picture</string>
-    <string name="webServer">http://192.168.1.106/book</string>
+    <string name="webServer">http://172.27.35.4/book</string>
     <string name="lorem_ipsum"> To set up the animation:</string>
 
 </resources>

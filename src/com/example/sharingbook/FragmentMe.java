@@ -1,6 +1,5 @@
 package com.example.sharingbook;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -40,15 +39,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 public class FragmentMe extends Fragment {
 	private Activity act;
-	final static int a[] = new int[] { 0, R.string.setting, R.string.logout };
-
+	int a[] = new int[] { 0, R.string.observing, R.string.fan, R.string.logout };
+	RequestQueue mQueue = null;
 	Bitmap upicBP = null;
 	ListView listview = null;
 	ProgressBar progressbar = null;
+	String observingCnt, fanCnt;
 
 	public FragmentMe(Activity activity) {
 		act = activity;
@@ -63,9 +64,44 @@ public class FragmentMe extends Fragment {
 		listview = (ListView) rootView.findViewById(R.id.listview);
 		progressbar = (ProgressBar) rootView.findViewById(R.id.loading_spinner);
 		listview.setVisibility(View.GONE);
-		upateUserInfo(act);
-
+		updateObserving();
 		return rootView;
+	}
+
+	void updateObserving() {
+		if (mQueue == null)
+			mQueue = Volley.newRequestQueue(act);
+		String webServer = getResources().getString(R.string.webServer);
+
+		String ustuid = tool.getString(act, "ustuid");
+		StringRequest stringRequest = new StringRequest(webServer
+				+ "/observingCnt.php?ustuid=" + ustuid,
+				new Response.Listener<String>() {
+					@Override
+					public void onResponse(String response) {
+
+						String s[] = response.split(" ");
+						if (s.length == 2) {
+							observingCnt = s[0];
+							fanCnt = s[1];
+							upateUserInfo(act);
+						} else {
+							show(getResources().getString(
+									R.string.networkFailed));
+						}
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						show(getResources().getString(R.string.networkFailed));
+					}
+				});
+		mQueue.add(stringRequest);
+	}
+
+	public void show(String s) {
+		new AlertDialog.Builder(act).setMessage(s)
+				.setPositiveButton(R.string.confirm, null).show();
 	}
 
 	public void upateUserInfo(final Activity act) {
@@ -78,7 +114,8 @@ public class FragmentMe extends Fragment {
 
 		String umd5 = tool.getString(act, "umd5");
 		String ustuid = tool.getString(act, "ustuid");
-		final RequestQueue mQueue = Volley.newRequestQueue(act);
+		if (mQueue == null)
+			mQueue = Volley.newRequestQueue(act);
 
 		String webServer = getResources().getString(R.string.webServer);
 
@@ -102,7 +139,7 @@ public class FragmentMe extends Fragment {
 							String upic = tool.getString(act, "upic");
 
 							final File file = new File(act.getFilesDir(),
-									response.getString("uname") + "upic");
+									response.getString("ustuid") + "upic");
 
 							if (!file.exists()) {
 								ImageRequest imgReq = new ImageRequest(
@@ -189,7 +226,12 @@ public class FragmentMe extends Fragment {
 
 		for (int i = 1; i < a.length; ++i) {
 			HashMap<String, String> item = new HashMap<String, String>();
-			item.put("item", getResources().getString(a[i]));
+			String s = getResources().getString(a[i]);
+			if (a[i] == R.string.observing)
+				s = s + " " + observingCnt + " »À";
+			else if (a[i] == R.string.fan)
+				s = s + " " + fanCnt + " »À";
+			item.put("item", s);
 			list.add(item);
 		}
 
@@ -309,8 +351,21 @@ public class FragmentMe extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			Intent intent = null;
 			switch (a[position]) {
-			case R.string.setting:
+			case 0:
+				intent = new Intent(act, User.class);
+				intent.putExtra("ustuid", tool.getString(act, "ustuid"));
+				intent.putExtra("uname", tool.getString(act, "uname"));
+				startActivity(intent);
+				break;
+			case R.string.observing:
+				intent = new Intent(act, ObservingList.class);
+				startActivity(intent);
+				break;
+			case R.string.fan:
+				intent = new Intent(act, FanList.class);
+				startActivity(intent);
 				break;
 			case R.string.logout:
 				new AlertDialog.Builder(act)
