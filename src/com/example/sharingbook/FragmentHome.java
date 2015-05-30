@@ -165,13 +165,13 @@ public class FragmentHome extends Fragment {
 			int cacheSize = maxMemory / 10;
 
 			try {
-				File cacheDir = getDiskCacheDir(act, "thumb");
+				File cacheDir = getDiskCacheDir(act, "thumbHome");
 				if (!cacheDir.exists()) {
 					cacheDir.mkdirs();
 				}
 
 				mDiskLruCache = DiskLruCache.open(cacheDir, getAppVersion(act),
-						1, 20 * 1024 * 1024);
+						1, 100 * 1024 * 1024);
 			} catch (IOException e) {
 
 			}

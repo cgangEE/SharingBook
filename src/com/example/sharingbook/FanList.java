@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -63,6 +64,9 @@ public class FanList extends Activity {
 		listview = (ListView) findViewById(R.id.listview);
 		progressbar = (ProgressBar) findViewById(R.id.loading_spinner);
 		listview.setVisibility(View.GONE);
+		
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
 		updateObserving();
 	}
 

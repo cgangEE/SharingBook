@@ -23,24 +23,27 @@ public final class R {
     }
     public static final class drawable {
         public static final int avatar=0x7f020000;
-        public static final int card_background=0x7f020001;
-        public static final int card_background_selector=0x7f020002;
-        public static final int card_state_pressed=0x7f020003;
-        public static final int chatfrom_bg=0x7f020004;
-        public static final int chatfrom_bg_focused=0x7f020005;
-        public static final int chatfrom_bg_normal=0x7f020006;
-        public static final int chatfrom_bg_pressed=0x7f020007;
-        public static final int chatto_bg=0x7f020008;
-        public static final int chatto_bg_focused=0x7f020009;
-        public static final int chatto_bg_normal=0x7f02000a;
-        public static final int chatto_bg_pressed=0x7f02000b;
-        public static final int ic_action_camera=0x7f02000c;
-        public static final int ic_action_new=0x7f02000d;
-        public static final int ic_action_photo=0x7f02000e;
-        public static final int ic_action_search=0x7f02000f;
-        public static final int ic_launcher=0x7f020010;
-        public static final int shape=0x7f020011;
-        public static final int shapered=0x7f020012;
+        public static final int canvas=0x7f020001;
+        public static final int card_background=0x7f020002;
+        public static final int card_background_selector=0x7f020003;
+        public static final int card_state_pressed=0x7f020004;
+        public static final int chatfrom_bg=0x7f020005;
+        public static final int chatfrom_bg_focused=0x7f020006;
+        public static final int chatfrom_bg_normal=0x7f020007;
+        public static final int chatfrom_bg_pressed=0x7f020008;
+        public static final int chatto_bg=0x7f020009;
+        public static final int chatto_bg_focused=0x7f02000a;
+        public static final int chatto_bg_normal=0x7f02000b;
+        public static final int chatto_bg_pressed=0x7f02000c;
+        public static final int ic_action_camera=0x7f02000d;
+        public static final int ic_action_new=0x7f02000e;
+        public static final int ic_action_new_black=0x7f02000f;
+        public static final int ic_action_photo=0x7f020010;
+        public static final int ic_action_search=0x7f020011;
+        public static final int ic_action_search_black=0x7f020012;
+        public static final int ic_launcher=0x7f020013;
+        public static final int shape=0x7f020014;
+        public static final int shapered=0x7f020015;
     }
     public static final class id {
         public static final int bBuy=0x7f08000b;
@@ -60,7 +63,7 @@ public final class R {
         public static final int cSpinner=0x7f08000c;
         public static final int clayout=0x7f08000d;
         public static final int cmessage=0x7f080012;
-        public static final int content=0x7f08001e;
+        public static final int content=0x7f08002e;
         public static final int cpic=0x7f080011;
         public static final int eDelete=0x7f08001c;
         public static final int eSauthor=0x7f080017;
@@ -72,18 +75,18 @@ public final class R {
         public static final int eSuname=0x7f08001a;
         public static final int eUname=0x7f080014;
         public static final int eUpic=0x7f080013;
-        public static final int hListview=0x7f080020;
-        public static final int hSauthor=0x7f080023;
-        public static final int hSlocation=0x7f080025;
-        public static final int hSname=0x7f080022;
-        public static final int hSpic=0x7f080021;
-        public static final int hSpinner=0x7f08001f;
-        public static final int hSprice=0x7f080024;
-        public static final int hStime=0x7f080027;
-        public static final int hUname=0x7f080026;
-        public static final int item=0x7f08002d;
-        public static final int listview=0x7f08002c;
-        public static final int loading_spinner=0x7f08002b;
+        public static final int hListview=0x7f08001f;
+        public static final int hSauthor=0x7f080022;
+        public static final int hSlocation=0x7f080024;
+        public static final int hSname=0x7f080021;
+        public static final int hSpic=0x7f080020;
+        public static final int hSpinner=0x7f08001e;
+        public static final int hSprice=0x7f080023;
+        public static final int hStime=0x7f080026;
+        public static final int hUname=0x7f080025;
+        public static final int item=0x7f08002c;
+        public static final int listview=0x7f08002b;
+        public static final int loading_spinner=0x7f08002a;
         public static final int pager=0x7f080000;
         public static final int posting=0x7f08003b;
         public static final int resiger=0x7f080038;
@@ -98,10 +101,10 @@ public final class R {
         public static final int uUname=0x7f080036;
         public static final int uUpic=0x7f080035;
         public static final int ugrade=0x7f08002f;
-        public static final int uname=0x7f08002e;
-        public static final int upic=0x7f080028;
-        public static final int upwd=0x7f08002a;
-        public static final int ustuid=0x7f080029;
+        public static final int uname=0x7f08002d;
+        public static final int upic=0x7f080027;
+        public static final int upwd=0x7f080029;
+        public static final int ustuid=0x7f080028;
         public static final int x=0x7f08001d;
     }
     public static final class layout {
@@ -112,9 +115,9 @@ public final class R {
         public static final int chat_item_right=0x7f030004;
         public static final int editbookinfo=0x7f030005;
         public static final int frag=0x7f030006;
-        public static final int fragment=0x7f030007;
-        public static final int home=0x7f030008;
-        public static final int home_item=0x7f030009;
+        public static final int home=0x7f030007;
+        public static final int home_item=0x7f030008;
+        public static final int introduction=0x7f030009;
         public static final int login=0x7f03000a;
         public static final int me=0x7f03000b;
         public static final int me_item=0x7f03000c;
@@ -129,31 +132,41 @@ public final class R {
         public static final int sharing=0x7f070002;
     }
     public static final class string {
-        public static final int action_camera=0x7f050039;
+        public static final int action_camera=0x7f050044;
         public static final int app_name=0x7f050001;
-        public static final int buy=0x7f050032;
+        public static final int buy=0x7f05003d;
         public static final int cancel=0x7f05001c;
         public static final int confirm=0x7f050012;
         public static final int contact=0x7f050021;
-        public static final int delete=0x7f050033;
-        public static final int deleteRemind=0x7f050034;
-        public static final int editBook=0x7f050036;
-        public static final int fan=0x7f05002f;
+        public static final int delete=0x7f05003e;
+        public static final int deleteRemind=0x7f05003f;
+        public static final int editBook=0x7f050041;
+        public static final int fan=0x7f050038;
         public static final int find=0x7f050022;
+        public static final int headPicUpdateSuccess=0x7f05003c;
         public static final int headpic=0x7f050026;
-        public static final int hello_world=0x7f050038;
+        public static final int hello_world=0x7f050043;
         public static final int home=0x7f05001f;
+        public static final int introduction=0x7f050039;
+        public static final int introduction0=0x7f050034;
+        public static final int introduction1=0x7f050035;
+        public static final int introduction2=0x7f050036;
+        public static final int introduction3=0x7f050037;
+        public static final int introductionHome=0x7f05002f;
+        public static final int introductionNew=0x7f050030;
+        public static final int introductionSearch=0x7f050031;
+        public static final int introductionURL=0x7f050033;
+        public static final int introductionURLRemind=0x7f050032;
         public static final int login=0x7f050006;
         public static final int loginError=0x7f05001a;
         public static final int logout=0x7f05001d;
         public static final int logoutRemind=0x7f05001b;
-        public static final int lorem_ipsum=0x7f05003c;
         public static final int me=0x7f050027;
         public static final int message=0x7f050020;
-        public static final int messageEmpty=0x7f050035;
+        public static final int messageEmpty=0x7f050040;
         public static final int networkFailed=0x7f050014;
         public static final int networkRemind=0x7f050013;
-        public static final int observed=0x7f050030;
+        public static final int observed=0x7f05003a;
         public static final int observing=0x7f05002e;
         public static final int posting=0x7f050025;
         public static final int preference_key=0x7f050000;
@@ -174,7 +187,7 @@ public final class R {
         public static final int slocationRemind=0x7f050011;
         public static final int sname=0x7f050028;
         public static final int snameRemind=0x7f05000e;
-        public static final int sold=0x7f050037;
+        public static final int sold=0x7f050042;
         public static final int spicRemind=0x7f05000d;
         public static final int sprice=0x7f05002a;
         public static final int spriceRemind=0x7f050010;
@@ -182,14 +195,14 @@ public final class R {
         public static final int ugradeRemind=0x7f05000c;
         public static final int uphone=0x7f050008;
         public static final int uphoneRemind=0x7f05000b;
-        public static final int upic=0x7f05003a;
+        public static final int upic=0x7f050045;
         public static final int upwd=0x7f050003;
         public static final int upwdR=0x7f050004;
         public static final int upwdRemind=0x7f05000a;
-        public static final int user=0x7f050031;
+        public static final int user=0x7f05003b;
         public static final int ustuid=0x7f050002;
         public static final int ustuidRemind=0x7f050009;
-        public static final int webServer=0x7f05003b;
+        public static final int webServer=0x7f050046;
     }
     public static final class style {
         /** 

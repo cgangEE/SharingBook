@@ -7,8 +7,10 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -53,6 +55,9 @@ public class Register extends Activity {
 		ugrade.setAdapter(mAdapter);
 		ugrade.setVisibility(View.VISIBLE);
 
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+
 	}
 
 	public void register(View view) {
@@ -82,9 +87,13 @@ public class Register extends Activity {
 
 		if (Network.ok(this)) {
 			String webServer = getResources().getString(R.string.webServer);
-			new HttpTask()
-					.execute(webServer + "/register.php?ustuid="
-							+ ustuidS + "&upwd=" + upwdS + "&ugrade=" + ugradeS);
+			try {
+				new HttpTask().execute(webServer + "/register.php?ustuid="
+						+ ustuidS + "&upwd="
+						+ URLEncoder.encode(upwdS, "utf-8") + "&ugrade="
+						+ ugradeS);
+			} catch (Exception e) {
+			}
 		} else
 			new AlertDialog.Builder(this).setMessage(R.string.networkRemind)
 					.setPositiveButton(R.string.confirm, null).show();
@@ -99,7 +108,7 @@ public class Register extends Activity {
 	public void registerSuccess() {
 		tool.putString(this, "ustuid", ustuidS);
 		tool.putString(this, "upwd", upwdS);
-		tool.putString(this, "umd5", tool.md5(ustuidS+upwd));
+		tool.putString(this, "umd5", tool.md5(ustuidS + upwdS));
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		finish();
@@ -138,8 +147,8 @@ public class Register extends Activity {
 			} else if (c == '2') {
 				result = getResources().getString(R.string.registerError);
 				show(result);
-			}
-			else show(result);
+			} else
+				show(result);
 		}
 
 		private String downloadUrl(String xurl) {

@@ -21,6 +21,7 @@ import libcore.io.DiskLruCache.Snapshot;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -81,6 +82,9 @@ public class User extends Activity {
 		unameS = intent.getStringExtra("uname");
 
 		uname.setText(unameS);
+		
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
 		showUpic();
 	}
 

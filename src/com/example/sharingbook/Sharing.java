@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.Random;
 
 import org.apache.http.HttpEntity;
@@ -18,6 +19,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -30,6 +32,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,11 +43,13 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 public class Sharing extends Activity {
+	boolean DEBUG = false;
+
 	Spinner slocation, sprice;
 	EditText sname, sauthor;
 	ImageButton spic;
 	Bitmap bp = null;
-	String location[] = { "分享地点", "柳园", "荷园", "菊园", "松园" };
+	String location[] = { "分享地点", "柳园", "荷园", "菊园", "松园", "眉湖", "南核", "北核", "图书馆", "南操", "北操", "由需要该书的人决定"};
 	String priceStr[] = new String[102];
 	String sauthorS, snameS, spriceS, slocationS, spicS;
 	int spriceId, slocationId;
@@ -77,6 +82,9 @@ public class Sharing extends Activity {
 		price.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sprice.setAdapter(price);
 		sprice.setVisibility(View.VISIBLE);
+		
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
 	}
 
 	public void show(String s) {
@@ -106,7 +114,8 @@ public class Sharing extends Activity {
 				out.flush();
 				out.close();
 			} catch (Exception e) {
-				show("fuck me "+e.toString());
+				if (DEBUG)
+					show("fuck me " + e.toString());
 			}
 
 			snameS = sname.getText().toString();
@@ -143,10 +152,14 @@ public class Sharing extends Activity {
 
 			if (Network.ok(this)) {
 				String webServer = getResources().getString(R.string.webServer);
+				try{
 				new HttpTask().execute(webServer + "/sharing.php?spic=" + spicS
 						+ "&sname=" + snameS + "&sauthor=" + sauthorS
 						+ "&sprice=" + spriceS + "&slocation=" + slocationS
-						+ "&ustuid=" + ustuidS);
+						+ "&ustuid=" + ustuidS );
+				} catch (Exception e){
+					
+				}
 			} else
 				new AlertDialog.Builder(this)
 						.setMessage(R.string.networkRemind)
@@ -160,19 +173,19 @@ public class Sharing extends Activity {
 	final int IMAGE_SELECT = 0;
 	final int IMAGE_CAMERA = 1;
 
-	void sharingSuccess(){
+	void sharingSuccess() {
 		new AlertDialog.Builder(this)
-		.setMessage(R.string.sharingSuccess)
-		.setPositiveButton(R.string.confirm,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
-						finish();
-					}
-				}).show();
+				.setMessage(R.string.sharingSuccess)
+				.setPositiveButton(R.string.confirm,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finish();
+							}
+						}).show();
 	}
-	
+
 	public class HttpTask extends AsyncTask<String, Void, String> {
 
 		@Override
@@ -183,26 +196,27 @@ public class Sharing extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+			//show(result);
 			char c = result.charAt(0);
-			if (c=='1'){
+			if (c == '1') {
 				sharingSuccess();
-			}
-			else{
-				if (c=='0')
-					result = getResources().getString(R.string.sharingFailed);
+			} else {
+				result = getResources().getString(R.string.sharingFailed);
 				show(result);
 			}
-			
+
 		}
+
 
 		private String uploadFile(String uploadUrl) {
 			try {
+				
 				HttpClient httpclient = new DefaultHttpClient();
 				httpclient.getParams().setParameter(
 						CoreProtocolPNames.PROTOCOL_VERSION,
 						HttpVersion.HTTP_1_1);
+				HttpPost httppost = new HttpPost(tool.process(uploadUrl));
 
-				HttpPost httppost = new HttpPost(uploadUrl);
 				MultipartEntity entity = new MultipartEntity();
 				File file = new File(Sharing.this.getFilesDir(), spicS);
 				ContentBody fileBody = new FileBody(file);
@@ -212,15 +226,19 @@ public class Sharing extends Activity {
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity resEntity = response.getEntity();
 
+				//Log.e("sharingErr", "T");
 				String ret = null;
 				if (resEntity != null)
 					ret = EntityUtils.toString(resEntity);
-				else
+				else{
+					//Log.e("sharingErr", "FT");
 					ret = getResources().getString(R.string.networkFailed);
+				}
 				httpclient.getConnectionManager().shutdown();
 
 				return ret;
 			} catch (Exception e) {
+				//Log.e("sharingErr", e.toString());
 				return getResources().getString(R.string.networkFailed);
 			}
 		}

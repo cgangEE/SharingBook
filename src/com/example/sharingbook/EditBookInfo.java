@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -56,6 +57,10 @@ public class EditBookInfo extends Activity {
 		unameS = intent.getStringExtra("uname");
 
 		uname.setText(unameS);
+		
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		
 		showUpic();
 		refresh();
 

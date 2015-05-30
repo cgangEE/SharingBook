@@ -31,6 +31,7 @@ import com.example.sharingbook.FragmentFind.MyAdapter.BitmapWorkerTask;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -66,6 +67,9 @@ public class ObservingList extends Activity {
 		listview = (ListView) findViewById(R.id.listview);
 		progressbar = (ProgressBar) findViewById(R.id.loading_spinner);
 		listview.setVisibility(View.GONE);
+		
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
 		updateObserving();
 	}
 

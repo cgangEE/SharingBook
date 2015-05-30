@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,14 +16,19 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,15 +49,20 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 public class FragmentMe extends Fragment {
-	private Activity act;
-	int a[] = new int[] { 0, R.string.observing, R.string.fan, R.string.logout };
+	private MainActivity act;
+	int a[] = new int[] { 0, R.string.observing, R.string.fan, R.string.introduction, R.string.logout };
 	RequestQueue mQueue = null;
 	Bitmap upicBP = null;
 	ListView listview = null;
 	ProgressBar progressbar = null;
 	String observingCnt, fanCnt;
 
-	public FragmentMe(Activity activity) {
+	ListViewAdapter ad = null;
+	
+	final int IMAGE_SELECT = 0;
+	final int IMAGE_CAMERA = 1;
+
+	public FragmentMe(MainActivity activity) {
 		act = activity;
 	}
 
@@ -104,6 +115,7 @@ public class FragmentMe extends Fragment {
 				.setPositiveButton(R.string.confirm, null).show();
 	}
 
+	
 	public void upateUserInfo(final Activity act) {
 		if (tool.getString(act, "uname") != null && upicBP != null) {
 			setListView();
@@ -235,7 +247,7 @@ public class FragmentMe extends Fragment {
 			list.add(item);
 		}
 
-		ListViewAdapter ad = new ListViewAdapter(act, list, R.layout.frag,
+	 ad = new ListViewAdapter(act, list, R.layout.frag,
 				new String[] { "item" }, new int[] { R.id.item });
 		listview.setAdapter(ad);
 
@@ -346,6 +358,32 @@ public class FragmentMe extends Fragment {
 
 	}
 
+	public void getPhoto() {
+		final String[] items = { "从手机相册选择", "拍照" };
+		new AlertDialog.Builder(act).setTitle("更换头像")
+				.setItems(items, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						act.type = which;
+						if (which == IMAGE_SELECT) {
+							Intent intent = new Intent();
+							intent.setType("image/*");
+							intent.setAction(Intent.ACTION_GET_CONTENT);
+							startActivityForResult(intent, IMAGE_SELECT);
+						} else {
+							Intent intent = new Intent(
+									MediaStore.ACTION_IMAGE_CAPTURE);
+							File file = new File(Environment
+									.getExternalStorageDirectory(), "spic.jpg");
+							Uri uri = Uri.fromFile(file);
+							intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+							startActivityForResult(intent, IMAGE_CAMERA);
+						}
+					}
+				}).show();
+	}
+
+
+	
 	public class LogoutListener implements OnItemClickListener {
 
 		@Override
@@ -354,10 +392,14 @@ public class FragmentMe extends Fragment {
 			Intent intent = null;
 			switch (a[position]) {
 			case 0:
+				/*
 				intent = new Intent(act, User.class);
 				intent.putExtra("ustuid", tool.getString(act, "ustuid"));
 				intent.putExtra("uname", tool.getString(act, "uname"));
 				startActivity(intent);
+				*/
+				getPhoto();
+				
 				break;
 			case R.string.observing:
 				intent = new Intent(act, ObservingList.class);
@@ -365,6 +407,10 @@ public class FragmentMe extends Fragment {
 				break;
 			case R.string.fan:
 				intent = new Intent(act, FanList.class);
+				startActivity(intent);
+				break;
+			case R.string.introduction:
+				intent = new Intent(act, Introduction.class);
 				startActivity(intent);
 				break;
 			case R.string.logout:

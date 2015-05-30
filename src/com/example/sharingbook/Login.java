@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -35,6 +36,9 @@ public class Login extends Activity {
 		upwd = (EditText) findViewById(R.id.upwd);
 		ustuid.setText(tool.getString(this, "ustuid"));
 		upwd.setText(tool.getString(this, "upwd"));
+		
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
 	}
 
 	@Override

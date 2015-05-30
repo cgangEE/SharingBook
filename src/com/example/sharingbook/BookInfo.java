@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -38,6 +39,8 @@ public class BookInfo extends Activity {
 	String sidS = null;
 	String unameS = null;
 	String umd5 = null;
+	String snameS = null;
+	
 	ImageView image = null;
 	RequestQueue mQueue = null;
 
@@ -45,6 +48,9 @@ public class BookInfo extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bookinfo);
+		
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
 
 		uname = (TextView) findViewById(R.id.bUname);
 		upic = (ImageView) findViewById(R.id.bUpic);
@@ -63,14 +69,20 @@ public class BookInfo extends Activity {
 	}
 
 	public void sendMessage(View view) {
-		Intent intent = new Intent(BookInfo.this, FragmentChat.class);
+		Intent intent = new Intent(BookInfo.this, Chat.class);
 		intent.putExtra("ustuid", ustuidS);
 		intent.putExtra("uname", unameS);
 		startActivity(intent);
 	}
 
 	public void buy(View view) {
-
+		if (snameS == null) return;
+		
+		Intent intent = new Intent(BookInfo.this, Chat.class);
+		intent.putExtra("message", "您好，我想购买《"+snameS+"》这本图书。");
+		intent.putExtra("ustuid", ustuidS);
+		intent.putExtra("uname", unameS);
+		startActivity(intent);
 	}
 
 	public void updateButton() {
@@ -158,6 +170,8 @@ public class BookInfo extends Activity {
 							TextView stime = (TextView) findViewById(R.id.bStime);
 							image = (ImageView) findViewById(R.id.bSpic);
 
+							snameS = response.getString("sname");
+							
 							sname.setText(getResources().getString(
 									R.string.sname)
 									+ ": " + response.getString("sname"));

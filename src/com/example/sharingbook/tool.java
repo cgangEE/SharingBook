@@ -9,6 +9,21 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
 public class tool {
+	static boolean DEBUG = false;
+	
+	public static String process(String s){
+		String ret = "";
+		for (int i=0; i<s.length(); ++i)
+			if (s.charAt(i) == ' '){
+				if (i==0 || (i!=0 && s.charAt(i-1)==' '))
+					continue;
+				ret += '+';
+			}
+			else 
+				ret += s.charAt(i);
+		return ret;
+	}
+	
 	public static String md5(String inStr) {
 		MessageDigest md5 = null;
 		try {

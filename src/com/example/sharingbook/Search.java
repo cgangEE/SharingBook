@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -76,7 +77,8 @@ public class Search extends Activity {
 		} catch (Exception e) {
 
 		}
-
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
 		refresh();
 
 	}
